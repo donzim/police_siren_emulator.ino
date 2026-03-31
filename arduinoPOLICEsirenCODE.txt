@@ -1,0 +1,76 @@
+int red = 2;
+int blue = 3;
+int button = 7;
+int buzzer = 8;
+
+int mode = 0;
+bool lastButton = HIGH;
+
+void setup() {
+  pinMode(red, OUTPUT);
+  pinMode(blue, OUTPUT);
+  pinMode(button, INPUT_PULLUP);
+  pinMode(buzzer, OUTPUT);
+}
+
+void loop() {
+  bool currentButton = digitalRead(button);
+
+  if (lastButton == HIGH && currentButton == LOW) {
+    mode++;
+    if (mode > 3) mode = 0;
+    delay(200);
+  }
+
+  lastButton = currentButton;
+
+  if (mode == 0) {
+    // Police
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, LOW);
+    tone(buzzer, 800);
+    delay(120);
+
+    digitalWrite(red, LOW);
+    digitalWrite(blue, HIGH);
+    tone(buzzer, 1200);
+    delay(120);
+  }
+
+  else if (mode == 1) {
+    // Ambulance
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    tone(buzzer, 1000);
+    delay(300);
+
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    noTone(buzzer);
+    delay(300);
+  }
+
+  else if (mode == 2) {
+    // Hazard
+    digitalWrite(red, HIGH);
+    digitalWrite(blue, HIGH);
+    noTone(buzzer);
+    delay(500);
+
+    digitalWrite(red, LOW);
+    digitalWrite(blue, LOW);
+    delay(500);
+  }
+
+  else if (mode == 3) {
+    // Fire truck
+    digitalWrite(red, HIGH);
+    tone(buzzer, 700);
+    delay(100);
+
+    digitalWrite(red, LOW);
+    digitalWrite(blue, HIGH);
+    tone(buzzer, 900);
+    delay(100);
+  }
+}
